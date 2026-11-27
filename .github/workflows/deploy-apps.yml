@@ -62,7 +62,7 @@ jobs:
       - name: Validate downloaded worker package
         run: |
           test -f artifacts/worker/host.json
-          test -f artifacts/worker/functions.metadata
+          test -f artifacts/worker/worker.config.json
           test -d artifacts/worker/.azurefunctions
           test -n "$(find artifacts/worker/.azurefunctions -type f -print -quit)"
       - uses: azure/login@7184910d9eb2b1c5e48f7073824a90609bb9b6d6 # v2
