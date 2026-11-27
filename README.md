@@ -1,4 +1,4 @@
-# Azure CloudStore
+# CloudStore
 
 [![CI](https://github.com/nafsampson/Azure-CloudStore/actions/workflows/dotnet-ci.yml/badge.svg?branch=main)](https://github.com/nafsampson/Azure-CloudStore/actions/workflows/dotnet-ci.yml)
 [![Manual deployment](https://github.com/nafsampson/Azure-CloudStore/actions/workflows/deploy-apps.yml/badge.svg?branch=main)](https://github.com/nafsampson/Azure-CloudStore/actions/workflows/deploy-apps.yml)
