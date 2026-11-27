@@ -4,7 +4,7 @@ CloudStore has two modes in the same web application. **LocalDemo** runs without
 
 Run all commands from the extracted folder containing `CloudStore.slnx`. Use a stable .NET 10 SDK compatible with `global.json`; the first build needs internet access to restore packages. Visual Studio users can open `CloudStore.slnx` and select the appropriate web launch profile.
 
-## 1. Local demo — easiest way to try the application
+## 1. Local demo - easiest way to try the application
 
 No Azure account, SQL Server installation, Docker or Functions host is required.
 
