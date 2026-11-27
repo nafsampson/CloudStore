@@ -1,10 +1,27 @@
-# CloudStore
+# Azure CloudStore
+
+[![CI](https://github.com/nafsampson/Azure-CloudStore/actions/workflows/dotnet-ci.yml/badge.svg?branch=main)](https://github.com/nafsampson/Azure-CloudStore/actions/workflows/dotnet-ci.yml)
+[![Manual deployment](https://github.com/nafsampson/Azure-CloudStore/actions/workflows/deploy-apps.yml/badge.svg?branch=main)](https://github.com/nafsampson/Azure-CloudStore/actions/workflows/deploy-apps.yml)
+[![.NET 10](https://img.shields.io/badge/.NET-10-512BD4?logo=dotnet&logoColor=white)](https://dotnet.microsoft.com/)
+[![Microsoft Azure](https://img.shields.io/badge/Microsoft-Azure-0078D4)](https://azure.microsoft.com/)
+[![Live demo](https://img.shields.io/badge/Live_demo-Open_CloudStore-4C1D95)](https://cloudstore-web-ejikat3k7myva.azurewebsites.net)
 
 CloudStore is an electronics storefront built with ASP.NET Core MVC and .NET 10. It combines customer shopping, administrator tools, private file storage and asynchronous order processing on Microsoft Azure. A separate LocalDemo mode runs without an Azure subscription.
 
 **[Open the live application](https://cloudstore-web-ejikat3k7myva.azurewebsites.net)** · **[Detailed setup and deployment guide](RUNNING.md)**
 
-The hosted application requires an account. Credentials are not included in this repository. Availability depends on the Azure for Students subscription; LocalDemo provides an independent way to explore the application.
+## Try the live demo
+
+Use the shared customer account to browse products, manage a cart, place a demonstration order and follow its status:
+
+| Field | Value |
+| --- | --- |
+| Username | `store-customer` |
+| Password | `storecustomer!47#B` |
+
+This is a public demonstration account shared by visitors; use sample information only. Administrator credentials are kept private. These credentials apply to the hosted demo, not LocalDemo.
+
+Availability depends on the Azure for Students subscription. If the hosted application is unavailable, [run it locally](#run-locally).
 
 ![CloudStore customer storefront](docs/images/storefront.png)
 
@@ -105,7 +122,17 @@ The deployed environment uses South Africa North, an App Service web application
 
 Follow [RUNNING.md](RUNNING.md) for configuration, SQL migrations, account setup, publishing and recovery. Replace environment-specific resource names, budget dates and notification settings before deploying your own environment. Review an infrastructure what-if before applying changes.
 
-The repository includes [CI](.github/workflows/dotnet-ci.yml), [application deployment](.github/workflows/deploy-apps.yml) and [infrastructure deployment](.github/workflows/infrastructure.yml) workflows. GitHub environments, variables and federated identity must be configured before using them. The captured deployment was performed through Azure Cloud Shell; these GitHub workflows have not yet been validated in a repository run.
+### GitHub Actions
+
+| Workflow | Trigger | Purpose |
+| --- | --- | --- |
+| [CI](.github/workflows/dotnet-ci.yml) | Push or pull request to `main` or `master`; manual run | Compiles infrastructure, builds the solution and runs tests |
+| [Application deployment](.github/workflows/deploy-apps.yml) | Manual run from `main` | Builds, tests and publishes the website and Functions worker to Azure |
+| [Infrastructure deployment](.github/workflows/infrastructure.yml) | Manual run from `main` | Previews Bicep changes; an optional apply uses a separate environment |
+
+[CI](https://github.com/nafsampson/Azure-CloudStore/actions/workflows/dotnet-ci.yml) and [manual application deployment](https://github.com/nafsampson/Azure-CloudStore/actions/runs/45986811389) have completed successfully. Pushing to `main` runs verification; it does not deploy the application. To release an update, choose **Actions → Deploy reviewed CloudStore apps → Run workflow → main**.
+
+Deployment authenticates through OpenID Connect and the `azure-production` environment, without a stored Azure client secret. A new installation needs its own environment variables, federated trust and app-scoped role assignments. Match the Azure trust subject to GitHub's emitted subject, including owner and repository IDs where present; review it after a repository rename. Infrastructure deployment requires separate setup and is not part of an application release.
 
 ## Security and operational boundaries
 
@@ -113,7 +140,7 @@ The repository includes [CI](.github/workflows/dotnet-ci.yml), [application depl
 - Passwords use ASP.NET Core Identity hashing. Disabled accounts and password resets invalidate existing sessions through security-stamp checks.
 - Login rate limiting and anti-forgery protection cover authentication and form submissions.
 - Image uploads validate content, dimensions and size; contracts accept PDF or UTF-8 text. The maximum upload size is 4 MiB. Format validation is not malware scanning.
-- SQL access is restricted to the application's required account tables. Secrets and local account databases are excluded from the source package.
+- SQL access is restricted to the application's required account tables. Infrastructure secrets and local account databases are excluded from the source package; the shared customer demo login above is intentionally public.
 - `/health/live` checks that the web process responds; it does not verify SQL, storage or worker readiness.
 
 Monitoring evidence confirms telemetry from both applications and enabled web/order failure rules. The notification email was verified, but end-to-end alert email delivery remains unverified: Azure rejected the action-group test with `Free subscription not supported`.
@@ -194,4 +221,4 @@ RUNNING.md                 Detailed setup and operations guide
 
 ## Credits
 
-The interface adapts the MayBell theme by Bogdan Bulakh. Its [MIT license](src/CloudStore.Web/wwwroot/lib/maybell/LICENSE), [Tailwind license](src/CloudStore.Web/wwwroot/lib/maybell/TAILWIND-LICENSE) and [source attribution](src/CloudStore.Web/wwwroot/lib/maybell/SOURCE.txt) are retained. Product and promotional imagery is synthetic, AI-generated demonstration artwork; it does not represent manufacturer endorsements or real offers.
+The interface adapts the **MayBell / Tailwind E-commerce** theme by Bogdan Bulakh from [bbulakh/tailwind-ecommerce, branch `2.x`](https://github.com/bbulakh/tailwind-ecommerce/tree/2.x). CloudStore integrates the theme into ASP.NET Core Razor views and builds its CSS locally with Tailwind CSS. Its [MIT license](src/CloudStore.Web/wwwroot/lib/maybell/LICENSE), [Tailwind license](src/CloudStore.Web/wwwroot/lib/maybell/TAILWIND-LICENSE) and [source attribution](src/CloudStore.Web/wwwroot/lib/maybell/SOURCE.txt) are retained. Product and promotional imagery is synthetic, AI-generated demonstration artwork; it does not represent manufacturer endorsements or real offers.
