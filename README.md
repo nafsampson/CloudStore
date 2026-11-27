@@ -77,6 +77,8 @@ SQL authentication uses a user-assigned managed identity. Business storage curre
 
 Repeated queue deliveries do not downgrade Ready or Processed orders. Conditional ETag updates protect against concurrent changes. Checkout retries use stable order identifiers, and cart removal checks the captured row version. Failed queue processing is retried by the Functions host, with a maximum dequeue count of five before poison-queue handling.
 
+**Click a heading below to expand the screenshots.**
+
 <details>
 <summary>See the captured order workflow</summary>
 
@@ -92,7 +94,7 @@ Repeated queue deliveries do not downgrade Ready or Processed orders. Conditiona
 
 ![Customer sees the Processed order](docs/images/order-processed.png)
 
-**Persisted Azure record** — the corresponding Table Storage row shows `Status=Processed` and `QueueStatus=Sent`.
+**Persisted Azure record** - the corresponding Table Storage row shows `Status=Processed` and `QueueStatus=Sent`.
 
 ![Processed order in Azure Table Storage](docs/images/azure-order-processed.png)
 
@@ -147,6 +149,8 @@ Monitoring evidence confirms telemetry from both applications and enabled web/or
 
 The deployed budget is **$10 per month**, with notifications at 80% actual spend and 100% forecast spend. A budget sends notifications; it does not stop resources or cap charges. Resource usage consumes the subscription's available credit or applicable billing allowance.
 
+**Click a heading below to expand the screenshots.**
+
 <details>
 <summary>See Azure deployment and monitoring evidence</summary>
 
@@ -181,6 +185,8 @@ Screenshots captured on 27 November 2026 show the deployed environment. Telemetr
 ![Azure monthly budget configuration](docs/images/azure-budget.png)
 
 </details>
+
+**Click a heading below to expand the screenshots.**
 
 <details>
 <summary>See the login and administrator interface</summary>
