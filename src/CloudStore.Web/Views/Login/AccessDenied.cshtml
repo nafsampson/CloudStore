@@ -1,0 +1,11 @@
+@*
+//summary//
+Explains denied access and offers safe navigation back to an authorized area.
+//summary//
+//-------------------Start Of File------------------//
+*@
+@{ ViewData["Title"] = "Access denied"; }
+<section class="error-page"><span class="empty-icon"><partial name="_Icon" model='@("lock")' /></span><span class="eyebrow mt-4">A little boundary, for good reason</span><h1>This area isn’t available to your account.</h1><p>You do not have permission to view this page. Return to your home page, or contact your store administrator if you need help.</p>@if(User.Identity?.IsAuthenticated == true) { <a class="btn btn-primary" asp-controller="Home" asp-action="Index">Back to your home <partial name="_Icon" model='@("arrow")' /></a> }else { <a class="btn btn-primary" asp-controller="Login" asp-action="Index">Sign in</a> }</section>
+@*
+//-------------------End Of File------------------//
+*@

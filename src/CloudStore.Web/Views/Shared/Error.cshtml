@@ -1,0 +1,12 @@
+@*
+//summary//
+Shows a safe error message and diagnostic request reference without developer instructions.
+//summary//
+//-------------------Start Of File------------------//
+*@
+@model ErrorViewModel
+@{ ViewData["Title"] = "Something went wrong"; }
+<section class="error-page"><span class="empty-icon"><partial name="_Icon" model='@("activity")' /></span><span class="eyebrow mt-4">Let’s take a step back</span><h1>Something didn’t go as planned.</h1><p>We couldn’t complete that request. Return to your home page and try again. If the problem continues, contact your store administrator.</p><a class="btn btn-primary" asp-controller="Home" asp-action="Index">Back to home <partial name="_Icon" model='@("arrow")' /></a>@if(Model.ShowRequestId) { <p class="mt-4">Share this reference with your administrator:<code>@Model.RequestId</code></p> }</section>
+@*
+//-------------------End Of File------------------//
+*@

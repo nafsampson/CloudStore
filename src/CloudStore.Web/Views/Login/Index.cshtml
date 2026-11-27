@@ -1,0 +1,35 @@
+@*
+//summary//
+Presents accessible sign-in controls and a storefront introduction without unsupported account actions.
+//summary//
+//-------------------Start Of File------------------//
+*@
+@{ ViewData["Title"] = "Welcome back"; }
+<div class="login-layout">
+    <section class="login-story login-story--photographic" aria-labelledby="story-heading">
+        <img class="login-story-background" src="~/img/electronics-login-background.png" asp-append-version="true" alt="" />
+        <span class="login-story-shade" aria-hidden="true"></span>
+        <div class="login-story-content">
+        <span class="eyebrow light">Your next setup starts here</span>
+        <h1 id="story-heading">Better tech.<br />Everyday possibilities.</h1>
+        <p>Discover audio, desk accessories and connections for your everyday setup.</p>
+        </div>
+        <div class="story-caption"><span class="story-line"></span>Work. Play. Connect.</div>
+    </section>
+    <section class="login-card" aria-labelledby="login-heading">
+        <span class="icon-tile"><partial name="_Icon" model='@("lock")' /></span>
+        <span class="eyebrow">Your CloudStore account</span>
+        <h2 id="login-heading">Welcome back.</h2>
+        <p class="muted">Sign in to pick up where you left off.</p>
+        <form asp-controller="Login" asp-action="Index" method="post" class="stack-form">
+            <div class="field"><label for="username">Username</label><input id="username" name="username" autocomplete="username" maxlength="256" class="form-control" placeholder="Enter your username" required /></div>
+            <div class="field"><label for="password">Password</label><div class="password-field"><input id="password" name="password" type="password" autocomplete="current-password" maxlength="256" class="form-control" placeholder="Enter your password" required /><button class="password-toggle" type="button" data-password-toggle="password" aria-label="Show password" aria-pressed="false">Show</button></div></div>
+            @if (ViewBag.Error != null) { <div class="alert alert-danger" role="alert">@ViewBag.Error</div> }
+            <button type="submit" class="btn btn-primary btn-block">Sign in <partial name="_Icon" model='@("arrow")' /></button>
+        </form>
+        <div class="login-help"><partial name="_Icon" model='@("lock")' /><p>Need an account or help signing in?<br /><strong>Contact your store administrator.</strong></p></div>
+    </section>
+</div>
+@*
+//-------------------End Of File------------------//
+*@

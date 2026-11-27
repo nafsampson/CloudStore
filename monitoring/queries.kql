@@ -1,0 +1,30 @@
+//summary//
+// Provides bounded diagnostic queries for requests, dependencies and order delivery.
+//summary//
+//-------------------Start Of File------------------//
+// Request failures by cloud role.
+AppRequests
+| where TimeGenerated > ago(24h)
+| summarize Requests=count(), Failures=countif(Success == false), P95ms=percentile(DurationMs,95) by AppRoleName, bin(TimeGenerated, 1h)
+
+// Find a failed request, copy its OperationId, then correlate the next query.
+AppRequests
+| where TimeGenerated > ago(24h) and Success == false
+| project TimeGenerated, AppRoleName, Name, ResultCode, OperationId
+| order by TimeGenerated desc
+
+// Replace the placeholder with an observed OperationId, never a credential.
+union AppRequests, AppDependencies, AppTraces, AppExceptions
+| where TimeGenerated > ago(24h) and OperationId == 'REPLACE_OPERATION_ID'
+| order by TimeGenerated asc
+
+// Delivery health: completion includes safe duplicate handling.
+AppTraces
+| where TimeGenerated > ago(24h) and Message startswith 'CloudStore order delivery'
+| summarize Events=count() by Message, bin(TimeGenerated, 1h)
+
+// Slow dependency calls. SQL statements and bodies are not needed for this investigation.
+AppDependencies
+| where TimeGenerated > ago(24h)
+| summarize Calls=count(), Failures=countif(Success == false), P95ms=percentile(DurationMs,95) by AppRoleName, DependencyType, Target
+//-------------------End Of File------------------//

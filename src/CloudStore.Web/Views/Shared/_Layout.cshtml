@@ -1,0 +1,65 @@
+@*
+//summary//
+Adapts MayBell's search header and purple/amber navigation to CloudStore's authenticated roles.
+Provides accessible mobile navigation, real account actions and a separate administrator workspace.
+//summary//
+//-------------------Start Of File------------------//
+*@
+@inject Microsoft.Extensions.Configuration.IConfiguration AppConfiguration
+@{
+    var signedIn = User.Identity?.IsAuthenticated == true;
+    var admin = User.IsInRole("Admin");
+    var controller = ViewContext.RouteData.Values["controller"]?.ToString();
+    var action = ViewContext.RouteData.Values["action"]?.ToString();
+    string Current(string c, string? a = null) => controller == c && (a == null || action == a) ? "active" : "";
+    var displayName = User.Identity?.Name ?? "Guest";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#2e1065" />
+    <title>@ViewData["Title"] · CloudStore</title>
+    <link rel="icon" href="~/img/brand.svg" type="image/svg+xml" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/maybell.min.css" asp-append-version="true" />
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    @if (AppConfiguration["Storage:Mode"] == "LocalDemo")
+    {
+        <div class="demo-strip"><div class="shell"><span class="demo-dot"></span><strong>Local demo</strong><span>Fictional sample data · saved on this device</span></div></div>
+    }
+    <header>
+        <div class="shell maybell-top">
+            <a class="brand" asp-controller="Home" asp-action="Index"><span class="brand-mark"><partial name="_Icon" model='@("bag")' /></span>CloudStore<span class="brand-period">.</span></a>
+            @if (signedIn)
+            {
+                <form class="header-search" asp-controller="Tables" asp-action="Products" method="get" role="search"><partial name="_Icon" model='@("search")' /><label class="visually-hidden" for="header-search">Search the collection</label><input id="header-search" name="search" type="search" placeholder="Search products…" maxlength="128" /><button type="submit">Search</button></form>
+                <div class="top-actions"><a class="top-action" asp-controller="Orders" asp-action="Index"><partial name="_Icon" model='@("orders")' /><span>@(admin ? "Orders" : "My orders")</span></a>@if(!admin) { <a class="top-action" asp-controller="Cart" asp-action="Index"><partial name="_Icon" model='@("cart")' /><span>Cart</span></a> }</div>
+            }
+            else { <span class="secure-label"><partial name="_Icon" model='@("lock")' />Secure sign-in</span> }
+            @if(signedIn) { <button class="mobile-menu-button" type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="mobile-navigation" data-navigation-toggle><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" /></svg></button> }
+        </div>
+        @if(signedIn)
+        {
+            <nav class="maybell-nav hidden lg:block" aria-label="Main navigation"><div class="shell maybell-nav-inner"><a class="collection-tab" asp-controller="Tables" asp-action="Products"><partial name="_Icon" model='@("grid")' />@(admin ? "Store catalog" : "Shop collection")</a><div class="main-links"><a class="nav-link @Current(admin ? "Admin" : "Customer")" asp-controller="@(admin ? "Admin" : "Customer")" asp-action="Index">@(admin ? "Overview" : "Home")</a><a class="nav-link @Current("Tables", "Products")" asp-controller="Tables" asp-action="Products">Products</a><a class="nav-link @Current("Orders")" asp-controller="Orders" asp-action="Index">Orders</a>@if(admin) { <a class="nav-link @Current("Files")" asp-controller="Files" asp-action="Index">Contracts</a><a class="nav-link @Current("Queue")" asp-controller="Queue" asp-action="Index">Activity</a> }</div><div class="account-actions"><span class="account-avatar" aria-hidden="true">@displayName.Substring(0,1).ToUpperInvariant()</span><span class="account-name">@displayName<small>@(admin ? "Store administrator" : "Customer account")</small></span><form asp-controller="Login" asp-action="Logout" method="post"><button type="submit" class="icon-button" aria-label="Sign out" title="Sign out"><partial name="_Icon" model='@("logout")' /></button></form></div></div></nav>
+            <nav class="mobile-menu" id="mobile-navigation" aria-label="Mobile navigation" hidden><a class="nav-link" asp-controller="@(admin ? "Admin" : "Customer")" asp-action="Index">Home</a><a class="nav-link" asp-controller="Tables" asp-action="Products">Shop collection</a><a class="nav-link" asp-controller="Orders" asp-action="Index">Orders</a>@if(admin) { <a class="nav-link @Current("Files")" asp-controller="Files" asp-action="Index">Contracts</a><a class="nav-link @Current("Queue")" asp-controller="Queue" asp-action="Index">Activity</a> }@if(!admin) { <a class="nav-link" asp-controller="Cart" asp-action="Index">Cart</a> }<div class="account-actions"><span class="account-name">@displayName</span><form asp-controller="Login" asp-action="Logout" method="post"><button class="icon-button" type="submit" aria-label="Sign out"><partial name="_Icon" model='@("logout")' /></button></form></div></nav>
+        }
+    </header>
+    <div class="storefront-main shell">
+<main id="main-content" class="page-content" tabindex="-1">
+            @if(TempData["Error"] is string error) { <div class="alert alert-danger" role="alert"><partial name="_Icon" model='@("activity")' /><span>@error</span></div> }
+            @if(TempData["Message"] is string message) { <div class="alert alert-success" role="status"><partial name="_Icon" model='@("check")' /><span>@message</span></div> }
+            @RenderBody()
+        </main>
+    </div>
+    <footer class="site-footer"><div class="shell footer-inner"><a class="footer-brand" asp-controller="Home" asp-action="Index">CloudStore.</a><span>Your everyday. Your collection.</span><div><span>© @DateTime.UtcNow.Year CloudStore</span>@if(signedIn) { <a asp-controller="Home" asp-action="Privacy">Privacy</a> }</div></div></footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/storefront.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required:false)
+</body>
+</html>
+@*
+//-------------------End Of File------------------//
+*@

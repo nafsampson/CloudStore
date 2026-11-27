@@ -1,0 +1,11 @@
+@*
+//summary//
+Provides a role-aware entry point to the storefront or administrator workspace.
+//summary//
+//-------------------Start Of File------------------//
+*@
+@{ ViewData["Title"] = "Welcome to CloudStore"; var admin = User.IsInRole("Admin"); }
+<section class="collection-hero"><div><span class="eyebrow">Welcome to CloudStore</span><h1>Good things,<br /><em>all in one place.</em></h1><p>@(admin ? "A clear, considered workspace for your products and orders." : "Discover electronics and accessories for your everyday setup.")</p><a class="btn btn-primary" asp-controller="@(admin ? "Admin" : "Tables")" asp-action="@(admin ? "Index" : "Products")">@(admin ? "Open your workspace" : "Explore the collection") <partial name="_Icon" model='@("arrow")' /></a></div><div class="hero-art"><span class="hero-orbit"></span><img src="~/img/electronics-hero.png" alt="Electronics arranged on a modern desk" /></div></section>
+@*
+//-------------------End Of File------------------//
+*@

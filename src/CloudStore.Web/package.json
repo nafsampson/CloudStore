@@ -1,0 +1,12 @@
+{
+  "name": "cloudstore-web-styles",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "css:build": "tailwindcss -i ./Styles/maybell.css -o ./wwwroot/css/maybell.min.css --minify",
+    "css:watch": "tailwindcss -i ./Styles/maybell.css -o ./wwwroot/css/maybell.min.css --watch"
+  },
+  "devDependencies": {
+    "tailwindcss": "3.4.17"
+  }
+}

@@ -1,0 +1,14 @@
+@*
+//summary//
+Edits product details and an optional image while retaining the concurrency token.
+//summary//
+//-------------------Start Of File------------------//
+*@
+@model CloudStore.Models.Product
+@{ ViewData["Title"] = "Edit product"; }
+<a class="breadcrumb-link" asp-action="Products"><partial name="_Icon" model='@("arrow")' />Product catalog</a>
+<div class="page-heading"><div><span class="eyebrow">Keep the details considered</span><h1>Edit product</h1><p>Give @Model.Name a fresh update.</p></div></div>
+<section class="panel form-width"><div class="panel-heading"><h2>Product information</h2></div><form asp-action="EditProduct" method="post" enctype="multipart/form-data" class="form-grid panel-form"><input type="hidden" asp-for="RowKey" /><input type="hidden" name="version" value="@Model.ETag.ToString()" /><div asp-validation-summary="ModelOnly" class="span-full"></div><div class="field span-full"><label asp-for="Name">Product name</label><input asp-for="Name" class="form-control" maxlength="128" required /><span asp-validation-for="Name"></span></div><div class="field"><label asp-for="Sku">SKU</label><input asp-for="Sku" class="form-control" maxlength="128" required /><span class="form-hint">Your internal product reference.</span></div><div class="field"><label asp-for="Price">Price (ZAR)</label><div class="input-prefix"><span>R</span><input type="number" step="0.01" min="0.01" max="1000000" asp-for="Price" class="form-control" required /></div></div><div class="field span-full"><label for="replacement-image">Replace product image <span class="optional">Optional</span></label><input id="replacement-image" type="file" name="imageFile" accept="image/png,image/jpeg" class="form-control" /><span class="form-hint">PNG or JPEG, up to 4 MiB. Leave empty to keep the existing image.</span></div><div class="form-actions span-full"><button type="submit" class="btn btn-primary">Save changes <partial name="_Icon" model='@("check")' /></button><a asp-action="Products" class="btn btn-secondary">Cancel</a></div></form></section>
+@*
+//-------------------End Of File------------------//
+*@

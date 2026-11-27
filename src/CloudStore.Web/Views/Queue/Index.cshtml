@@ -1,0 +1,14 @@
+@*
+//summary//
+Displays administrator operations messages and a bounded message composition form.
+//summary//
+//-------------------Start Of File------------------//
+*@
+@model List<string>
+@{ ViewData["Title"] = "Store activity"; }
+<div class="page-heading"><div><span class="eyebrow">Behind the everyday</span><h1>Store activity</h1><p>A view of recent operations messages and notes.</p></div><span class="status-pill">Administrator access</span></div>
+<details class="panel compose-panel"><summary><span><partial name="_Icon" model='@("plus")' />Add an operations note</span><span class="summary-hint">Expand form</span></summary><form asp-action="Send" method="post" class="stack-form panel-form"><div class="field"><label for="activity-note">Message</label><textarea id="activity-note" name="text" class="form-control" rows="3" maxlength="2048" placeholder="Write a short note for your store operations…" required></textarea><span class="form-hint">Keep passwords, credentials and personal information out of notes.</span></div><div class="form-actions"><button type="submit" class="btn btn-primary">Send note <partial name="_Icon" model='@("arrow")' /></button></div></form></details>
+<section class="panel"><div class="panel-heading"><h2>Operations messages</h2><span class="muted small">@Model.Count visible</span></div>@if(Model.Count == 0) { <div class="empty-state"><span class="empty-icon"><partial name="_Icon" model='@("activity")' /></span><h2>All quiet for now.</h2><p>Store operations messages will appear here as activity is recorded.</p></div> }else { <ol class="activity-list">@for(var i = 0; i < Model.Count; i++) { <li class="activity-item"><partial name="_Icon" model='@("activity")' /><p>@Model[i]</p><span class="activity-index">@((i + 1).ToString("00"))</span></li> }</ol> }</section>
+@*
+//-------------------End Of File------------------//
+*@

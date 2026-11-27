@@ -1,0 +1,13 @@
+@*
+//summary//
+Shows product information and private imagery with role-appropriate purchase or edit actions.
+//summary//
+//-------------------Start Of File------------------//
+*@
+@model CloudStore.Models.Product
+@{ ViewData["Title"] = Model.Name; }
+<a class="breadcrumb-link" asp-action="Products"><partial name="_Icon" model='@("arrow")' />Back to collection</a>
+<section class="detail-layout"><div class="detail-media"><partial name="_ProductArtwork" model="Model" />@if(!string.IsNullOrEmpty(Model.ImageName)) { <img class="product-photo" src="@Url.Action("Image", "Tables", new { id = Model.RowKey })" alt="@Model.Name" data-product-image /> }</div><div class="detail-copy"><span class="eyebrow">Electronics & accessories</span><h1>@Model.Name</h1><div class="detail-price">R @Model.Price</div><p>A closer look at your selection. Add it to your cart when you’re ready.</p><dl class="detail-meta"><dt>SKU</dt><dd>@Model.Sku</dd><dt>Product reference</dt><dd>@Model.RowKey</dd></dl>@if (User.IsInRole("Customer")) { <form asp-controller="Cart" asp-action="Add" method="post"><input type="hidden" name="productId" value="@Model.RowKey" /><button type="submit" class="btn btn-primary"><partial name="_Icon" model='@("cart")' />Add to cart</button></form> }@if (User.IsInRole("Admin")) { <a class="btn btn-primary" asp-action="EditProduct" asp-route-rowKey="@Model.RowKey"><partial name="_Icon" model='@("edit")' />Edit product</a> }</div></section>
+@*
+//-------------------End Of File------------------//
+*@

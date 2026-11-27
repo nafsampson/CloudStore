@@ -1,0 +1,17 @@
+@*
+//summary//
+Welcomes customers with working links to the collection, their cart and their own orders.
+//summary//
+//-------------------Start Of File------------------//
+*@
+@{ ViewData["Title"] = "Discover CloudStore"; }
+<section class="maybell-hero"><div class="maybell-hero-copy"><span class="eyebrow">Electronics & accessories</span><h1>Upgrade your<br />everyday setup.</h1><p>Audio, desk essentials and connections. Explore electronics for the way you work and unwind.</p><a class="btn" href="/Tables/Products">Shop the collection <partial name="_Icon" model='@("arrow")' /></a></div><div class="maybell-hero-art electronics-hero"><img src="~/img/electronics-hero.png" alt="Unbranded headphones, keyboard, mouse and USB-C hub on a modern desk" /></div></section><div class="maybell-services"><div><partial name="_Icon" model='@("box")' /><span>Explore the collection<small>Products and details in one place</small></span></div><div><partial name="_Icon" model='@("cart")' /><span>Build your selection<small>Review current prices in your cart</small></span></div><div><partial name="_Icon" model='@("orders")' /><span>Follow your orders<small>View your saved order status</small></span></div></div>
+<div class="section-heading"><h2>Make yourself at home.</h2><p>Your collection, your cart, your orders.</p></div>
+<div class="dashboard-grid">
+    <a class="panel dashboard-card" asp-controller="Tables" asp-action="Products"><partial name="_Icon" model='@("bag")' /><h2>Find your next favorite</h2><p>Explore the collection and take a closer look at the details.</p><span class="card-link">Shop collection <partial name="_Icon" model='@("arrow")' /></span></a>
+    <a class="panel dashboard-card" asp-controller="Cart" asp-action="Index"><partial name="_Icon" model='@("cart")' /><h2>Your selection</h2><p>Review the items you’ve picked before placing your order.</p><span class="card-link">Open your cart <partial name="_Icon" model='@("arrow")' /></span></a>
+    <a class="panel dashboard-card" asp-controller="Orders" asp-action="Index"><partial name="_Icon" model='@("orders")' /><h2>Follow along</h2><p>See your saved orders and check how they’re progressing.</p><span class="card-link">View my orders <partial name="_Icon" model='@("arrow")' /></span></a>
+</div>
+@*
+//-------------------End Of File------------------//
+*@

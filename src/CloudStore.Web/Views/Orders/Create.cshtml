@@ -1,0 +1,14 @@
+@*
+//summary//
+Submits direct orders with preserved request identity, quantity validation and account ownership.
+//summary//
+//-------------------Start Of File------------------//
+*@
+@model CloudStore.Models.Requests.CreateOrderRequest
+@{ ViewData["Title"] = "Create an order"; }
+<a class="breadcrumb-link" asp-action="Index"><partial name="_Icon" model='@("arrow")' />My orders</a>
+<div class="page-heading"><div><span class="eyebrow">Something you have in mind?</span><h1>Create an order</h1><p>Order directly with a product reference, or browse the collection.</p></div><a class="btn btn-secondary" asp-controller="Tables" asp-action="Products">Browse products</a></div>
+<section class="panel form-width"><div class="panel-heading"><h2>Order details</h2></div><form asp-action="Create" method="post" class="stack-form panel-form"><input asp-for="RequestId" type="hidden" /><div asp-validation-summary="All" class="text-danger"></div><div class="field"><label asp-for="ProductId">Product reference</label><input asp-for="ProductId" class="form-control" maxlength="128" placeholder="Copy the reference from a product’s details" required /><span class="form-hint">You can find this on the product detail page.</span></div><div class="field"><label asp-for="Quantity"></label><input asp-for="Quantity" type="number" min="1" max="1000" class="form-control" required /></div><div class="info-banner"><partial name="_Icon" model='@("check")' /><p><strong>Made for your account.</strong>Prices are confirmed from the current catalog when you place your order.</p></div><div class="form-actions"><button type="submit" class="btn btn-primary">Place order <partial name="_Icon" model='@("arrow")' /></button><a class="btn btn-secondary" asp-action="Index">Cancel</a></div></form></section>
+@*
+//-------------------End Of File------------------//
+*@

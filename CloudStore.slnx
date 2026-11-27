@@ -1,0 +1,22 @@
+<!--
+//summary//
+Groups the application, shared-library and test projects for Visual Studio.
+//summary//
+-->
+<!-- Start Of File -->
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Folder Name="/src/">
+    <Project Path="src/CloudStore.Functions/CloudStore.Functions.csproj" />
+    <Project Path="src/CloudStore.Shared/CloudStore.Shared.csproj" />
+    <Project Path="src/CloudStore.Web/CloudStore.Web.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/CloudStore.Tests/CloudStore.Tests.csproj" />
+  </Folder>
+</Solution>
+<!-- End Of File -->

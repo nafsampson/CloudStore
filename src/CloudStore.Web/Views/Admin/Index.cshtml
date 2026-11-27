@@ -1,0 +1,20 @@
+@*
+//summary//
+Presents administrator shortcuts to real store-management features without fabricated metrics.
+//summary//
+//-------------------Start Of File------------------//
+*@
+@{ ViewData["Title"] = "Store overview"; }
+<div class="page-heading"><div><span class="eyebrow">Your store, at a glance</span><h1>Make today a good one.</h1><p>Welcome back, @User.Identity?.Name. Let’s keep your store moving.</p></div><span class="status-pill">Administrator</span></div>
+<section class="welcome-banner"><span class="eyebrow">A well-kept store starts here</span><h1>A little attention.<br />A better everyday experience.</h1><p>Keep your products looking their best, follow your orders and take care of the people behind them.</p><a class="btn btn-primary" asp-controller="Tables" asp-action="Products">Manage your collection <partial name="_Icon" model='@("arrow")' /></a></section>
+<div class="section-heading"><h2>Your workspace</h2><p>Everything you need, one step away.</p></div>
+<div class="dashboard-grid">
+    <a class="panel dashboard-card" asp-controller="Tables" asp-action="Products"><partial name="_Icon" model='@("box")' /><h2>Product catalog</h2><p>Add something new, update a price or give a product a fresh image.</p><span class="card-link">Manage products <partial name="_Icon" model='@("arrow")' /></span></a>
+    <a class="panel dashboard-card" asp-controller="Orders" asp-action="Index"><partial name="_Icon" model='@("orders")' /><h2>Order management</h2><p>Follow saved orders, check delivery and process the ones that are ready.</p><span class="card-link">View orders <partial name="_Icon" model='@("arrow")' /></span></a>
+    <a class="panel dashboard-card" asp-controller="Files" asp-action="Index"><partial name="_Icon" model='@("file")' /><h2>Contracts</h2><p>Keep your store’s documents together with administrator-only access.</p><span class="card-link">Manage documents <partial name="_Icon" model='@("arrow")' /></span></a>
+    <a class="panel dashboard-card" asp-controller="Queue" asp-action="Index"><partial name="_Icon" model='@("activity")' /><h2>Store activity</h2><p>Review recent operations messages or add a short note for your team.</p><span class="card-link">Open activity <partial name="_Icon" model='@("arrow")' /></span></a>
+    <a class="panel dashboard-card" asp-controller="Home" asp-action="Privacy"><partial name="_Icon" model='@("lock")' /><h2>Data &amp; privacy</h2><p>Understand the account, order and document information this store holds.</p><span class="card-link">Read about privacy <partial name="_Icon" model='@("arrow")' /></span></a>
+</div>
+@*
+//-------------------End Of File------------------//
+*@

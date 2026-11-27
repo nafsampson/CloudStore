@@ -1,0 +1,14 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
+    "AzureWebJobsStorage": "",
+    "EnableStorageHttpWrites": "false",
+    "StorageConnection": "",
+    "OrdersQueueName": "orders-queue",
+    "OrderTable": "Orders",
+    "ProductTable": "Products",
+    "BlobContainer": "images",
+    "FileShareName": "contracts"
+  }
+}

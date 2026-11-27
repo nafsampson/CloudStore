@@ -1,0 +1,11 @@
+{
+  "version": "Notebook/1.0",
+  "items": [
+    { "type": 1, "content": { "json": "# CloudStore operations\nRequests, dependencies and order delivery. Use the attached Application Insights resource. Sampled telemetry is diagnostic evidence, not an accounting ledger." }, "name": "intro" },
+    { "type": 3, "content": { "version": "KqlItem/1.0", "query": "requests | where timestamp > ago(24h) | summarize Requests=sum(itemCount), Failures=sumif(itemCount, success == false), P95ms=percentile(duration,95) by cloud_RoleName, bin(timestamp,1h)", "size": 0, "title": "Request health and latency", "queryType": 0, "resourceType": "microsoft.insights/components", "visualization": "timechart" }, "name": "requests" },
+    { "type": 3, "content": { "version": "KqlItem/1.0", "query": "dependencies | where timestamp > ago(24h) | summarize Calls=sum(itemCount), Failures=sumif(itemCount, success == false), P95ms=percentile(duration,95) by cloud_RoleName, type, target", "size": 0, "title": "Dependencies", "queryType": 0, "resourceType": "microsoft.insights/components", "visualization": "table" }, "name": "dependencies" },
+    { "type": 3, "content": { "version": "KqlItem/1.0", "query": "traces | where timestamp > ago(24h) and message startswith 'CloudStore order delivery' | summarize Events=sum(itemCount) by message, bin(timestamp,1h)", "size": 0, "title": "Order delivery outcomes", "queryType": 0, "resourceType": "microsoft.insights/components", "visualization": "table" }, "name": "orders" }
+  ],
+  "isLocked": false,
+  "fallbackResourceIds": []
+}

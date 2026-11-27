@@ -1,0 +1,40 @@
+@*
+//summary//
+Shows account-scoped order status and administrator processing/recovery controls.
+//summary//
+//-------------------Start Of File------------------//
+*@
+@model List<CloudStore.Models.Order>
+@using System.Globalization
+@{ ViewData["Title"] = User.IsInRole("Admin") ? "Orders" : "My orders"; var admin = User.IsInRole("Admin"); }
+<div class="page-heading"><div><span class="eyebrow">@(admin ? "Every order, thoughtfully handled" : "Your CloudStore journey")</span><h1>@(admin ? "Orders" : "My orders") <span class="count-badge">@Model.Count</span></h1><p>@(admin ? "Follow progress, resolve delays and process orders when they’re ready." : "A clear view of the things you’ve chosen and where they stand.")</p></div><div class="page-actions">@if(!admin) { <a class="btn btn-secondary" asp-controller="Cart" asp-action="Index">Return to cart</a><a class="btn btn-primary" asp-action="Create"><partial name="_Icon" model='@("plus")' />New order</a> }</div></div>
+@if (Model.Count > 0)
+{
+<div class="stat-grid"><div class="stat-card"><div><span>Awaiting processing</span><strong>@Model.Count(o => o.Status == "Pending")</strong></div><partial name="_Icon" model='@("clock")' /></div><div class="stat-card"><div><span>Ready</span><strong>@Model.Count(o => o.Status == "Ready")</strong></div><partial name="_Icon" model='@("box")' /></div><div class="stat-card"><div><span>Processed</span><strong>@Model.Count(o => o.Status == "Processed")</strong></div><partial name="_Icon" model='@("check")' /></div></div>
+}
+@if (admin)
+{
+    <div class="recovery-note"><partial name="_Icon" model='@("activity")' /><p><strong>Some orders taking a little longer?</strong><br />Recheck orders waiting for at least five minutes before investigating individual deliveries.</p><form asp-action="RetryPending" method="post"><input type="hidden" name="limit" value="20" /><button class="btn btn-sm btn-outline-primary" type="submit">Recheck delayed orders</button></form></div>
+}
+@if (Model.Count == 0)
+{
+    <div class="empty-state panel"><span class="empty-icon"><partial name="_Icon" model='@("orders")' /></span><h2>@(admin ? "A clear order book." : "Your first find is still ahead.")</h2><p>@(admin ? "Saved orders will appear here as customers place them." : "Once you place an order, you can follow its progress right here.")</p><a class="btn btn-primary" asp-controller="Tables" asp-action="Products">Explore the collection <partial name="_Icon" model='@("arrow")' /></a></div>
+}
+else
+{
+<section class="panel table-panel"><div class="panel-heading"><h2>@(admin ? "Order book" : "Your orders")</h2><span class="muted small">@Model.Count saved orders</span></div><div class="table-responsive"><table class="table"><thead><tr><th scope="col">Order reference</th><th scope="col">Product</th><th scope="col">Qty</th><th scope="col">Unit price</th><th scope="col">Total</th><th scope="col">Date (UTC)</th><th scope="col">Status</th>@if(admin) { <th scope="col">Customer</th><th scope="col">Delivery</th><th scope="col">Actions</th> }</tr></thead><tbody>
+@foreach (var order in Model)
+{
+    var statusClass = order.Status switch { "Ready" => "status-ready", "Processed" => "status-processed", _ => "status-pending" };
+    <tr><td><span class="reference" title="@order.RowKey">@order.RowKey</span></td><td><span class="cell-primary">@order.ProductName</span></td><td>@order.Quantity</td><td>R @((order.UnitPriceCents / 100m).ToString("0.00", CultureInfo.InvariantCulture))</td><td><strong>R @((order.TotalPriceCents / 100m).ToString("0.00", CultureInfo.InvariantCulture))</strong></td><td><span class="cell-primary">@order.OrderDate.ToString("dd MMM yyyy")</span><span class="cell-secondary">@order.OrderDate.ToString("HH:mm") UTC</span></td><td><span class="status-pill @statusClass">@order.Status</span></td>
+    @if(admin)
+    {
+        <td><span class="reference">@order.CustomerId</span></td><td><span class="cell-primary">@order.QueueStatus</span><span class="cell-secondary">@order.DispatchAttempts attempts</span></td><td>@if(order.Status == "Pending") { <form asp-action="RetryDelivery" method="post"><input type="hidden" name="orderId" value="@order.RowKey" /><button type="submit" class="btn btn-sm btn-outline-primary">Retry delivery once</button></form> }@if(order.Status == "Ready") { <form asp-action="Process" method="post"><input type="hidden" name="orderId" value="@order.RowKey" /><button type="submit" class="btn btn-sm btn-primary">Mark processed</button></form> }</td>
+    }
+    </tr>
+}
+</tbody></table></div></section>
+}
+@*
+//-------------------End Of File------------------//
+*@

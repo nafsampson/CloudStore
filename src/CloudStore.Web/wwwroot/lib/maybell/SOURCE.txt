@@ -1,0 +1,6 @@
+MayBell / Tailwind Ecommerce
+Source: https://github.com/bbulakh/tailwind-ecommerce/tree/2.x
+Copyright (c) 2023 Bogdan Bulakh. MIT License, included as LICENSE.
+CloudStore adapts the purple/amber search header, navigation, catalog cards and page composition into dynamic Razor views.
+Original retail sample data, photographs, fake reviews/payment pages and frontend demo checkout logic are not included.
+CSS is built locally using Tailwind CSS 3.4.17; no runtime CDN is needed.

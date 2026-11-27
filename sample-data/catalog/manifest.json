@@ -1,0 +1,47 @@
+{
+  "Version": 1,
+  "Products": [
+    {
+      "ProductId": "demo-headphones",
+      "File": "electronics-headphones.png",
+      "BlobName": "50b96690f37b98cd3b797f3c1040c2fc.png",
+      "Length": 2036344,
+      "Sha256": "50b96690f37b98cd3b797f3c1040c2fcb4f3124e8ca5f586caae458e2496bcb7"
+    },
+    {
+      "ProductId": "demo-keyboard",
+      "File": "electronics-keyboard.png",
+      "BlobName": "fd53170071860838591fa5d1b2bf3f93.png",
+      "Length": 1828831,
+      "Sha256": "fd53170071860838591fa5d1b2bf3f933afa0c9a7a3f74381e1370d4f92c36ed"
+    },
+    {
+      "ProductId": "demo-mouse",
+      "File": "electronics-mouse.png",
+      "BlobName": "c93d9c951520dc2a973a442cf30c2e0c.png",
+      "Length": 2006864,
+      "Sha256": "c93d9c951520dc2a973a442cf30c2e0c0973b718d43fe912c82fb1c1423b05ca"
+    },
+    {
+      "ProductId": "demo-speaker",
+      "File": "electronics-speaker.png",
+      "BlobName": "8e6149e4a9e7c98476781c0f4d4b48a3.png",
+      "Length": 2415542,
+      "Sha256": "8e6149e4a9e7c98476781c0f4d4b48a306b13b79d9001c6a1731025d2224e904"
+    },
+    {
+      "ProductId": "demo-webcam",
+      "File": "electronics-webcam.png",
+      "BlobName": "e0dc5c171d91bc4bdb8f31d368b0a773.png",
+      "Length": 1976090,
+      "Sha256": "e0dc5c171d91bc4bdb8f31d368b0a77357219d044c212ca630501ba6ef40e61c"
+    },
+    {
+      "ProductId": "demo-hub",
+      "File": "electronics-hub.png",
+      "BlobName": "211c83709818c1a3714f82af48459b6b.png",
+      "Length": 1899559,
+      "Sha256": "211c83709818c1a3714f82af48459b6bef823b32fc57e4c953f2a2f49cb699bd"
+    }
+  ]
+}

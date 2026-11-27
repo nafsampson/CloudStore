@@ -1,0 +1,51 @@
+@*
+//summary//
+Displays the product collection with client-side search/sort and role-appropriate catalog actions.
+//summary//
+//-------------------Start Of File------------------//
+*@
+@model List<CloudStore.Models.Product>
+@using System.Globalization
+@{ ViewData["Title"] = User.IsInRole("Admin") ? "Product catalog" : "Shop collection"; var admin = User.IsInRole("Admin"); }
+@if (!admin)
+{
+    <section class="maybell-hero"><div class="maybell-hero-copy"><span class="eyebrow">Electronics & accessories</span><h1>Upgrade your<br />everyday setup.</h1><p>Audio, desk essentials and connections. Explore electronics for the way you work and unwind.</p><a class="btn" href="#collection">Shop the collection <partial name="_Icon" model='@("arrow")' /></a></div><div class="maybell-hero-art electronics-hero"><img src="~/img/electronics-hero.png" alt="Unbranded headphones, keyboard, mouse and USB-C hub on a modern desk" /></div></section><div class="maybell-services"><div><partial name="_Icon" model='@("box")' /><span>Explore the collection<small>Products and details in one place</small></span></div><div><partial name="_Icon" model='@("cart")' /><span>Build your selection<small>Review current prices in your cart</small></span></div><div><partial name="_Icon" model='@("orders")' /><span>Follow your orders<small>View your saved order status</small></span></div></div>
+}
+<div class="page-heading" id="collection"><div><span class="eyebrow">@(admin ? "Catalog management" : "A little something for you")</span><h1 class="@(admin ? "" : "section-title")">@(admin ? "Products" : "Shop the collection") <span class="count-badge">@Model.Count</span></h1><p>@(admin ? "Keep your collection fresh and your product details up to date." : "Explore the details. Find something that fits your day.")</p></div>@if (admin) { <button type="button" class="btn btn-primary" data-open-panel="new-product"><partial name="_Icon" model='@("plus")' /> Add product</button> }</div>
+@if (admin)
+{
+    <details class="panel compose-panel" id="new-product"><summary><span><partial name="_Icon" model='@("plus")' /> Add a product</span><span class="summary-hint">Expand form</span></summary>
+        <form asp-action="AddProduct" method="post" enctype="multipart/form-data" class="form-grid panel-form">
+            <div class="field"><label for="product-name">Product name</label><input id="product-name" type="text" name="Name" class="form-control" maxlength="128" placeholder="e.g. Canvas carry bag" required /></div>
+            <div class="field"><label for="product-sku">SKU</label><input id="product-sku" type="text" name="Sku" class="form-control" maxlength="128" placeholder="e.g. BAG-001" required /></div>
+            <div class="field"><label for="product-price">Price (ZAR)</label><div class="input-prefix"><span>R</span><input id="product-price" type="number" step="0.01" min="0.01" max="1000000" name="Price" class="form-control" placeholder="0.00" required /></div></div>
+            <div class="field"><label for="product-image">Product image <span class="optional">Optional</span></label><input id="product-image" type="file" name="imageFile" accept="image/png,image/jpeg" class="form-control" /><span class="form-hint">PNG or JPEG, up to 4 MiB.</span></div>
+            <div class="form-actions span-full"><button type="submit" class="btn btn-primary">Save product <partial name="_Icon" model='@("arrow")' /></button></div>
+        </form>
+    </details>
+}
+<section data-catalog>
+    <div class="catalog-toolbar"><div class="search-field"><partial name="_Icon" model='@("search")' /><label class="visually-hidden" for="catalog-search">Search products by name or SKU</label><input id="catalog-search" type="search" placeholder="Find your next favorite…" data-catalog-search autocomplete="off" /></div><div class="toolbar-end"><span class="results-label" data-catalog-count aria-live="polite">@Model.Count products</span><label class="visually-hidden" for="catalog-sort">Sort products</label><select id="catalog-sort" class="form-select" data-catalog-sort><option value="default">Featured order</option><option value="name">Name: A to Z</option><option value="price-low">Price: low to high</option><option value="price-high">Price: high to low</option></select></div></div>
+    @if (Model.Count == 0)
+    {
+        <div class="empty-state panel"><span class="empty-icon"><partial name="_Icon" model='@("box")' /></span><h2>A fresh start for your collection.</h2><p>@(admin ? "Add your first product to bring your catalog to life." : "There are no products to explore just yet. Please check back soon.")</p>@if(admin) { <button class="btn btn-primary" type="button" data-open-panel="new-product">Add your first product</button> }</div>
+    }
+    <div class="product-grid" data-catalog-grid>
+        @foreach (var p in Model)
+        {
+            var parsed = decimal.TryParse(p.Price, NumberStyles.Number, CultureInfo.InvariantCulture, out var price);
+            <article class="product-card" data-product-card data-search="@p.Name @p.Sku" data-price="@(parsed ? price.ToString(CultureInfo.InvariantCulture) : "")">
+                <a class="product-media" asp-action="ProductDetails" asp-route-id="@p.RowKey" aria-label="View @p.Name"><partial name="_ProductArtwork" model="p" />@if(!string.IsNullOrEmpty(p.ImageName)) { <img class="product-photo" src="@Url.Action("Image", "Tables", new { id = p.RowKey })" alt="@p.Name" loading="lazy" data-product-image /> }<span class="product-view">View product <partial name="_Icon" model='@("arrow")' /></span></a>
+                <div class="product-card-body"><span class="product-sku">@p.Sku</span><h2><a asp-action="ProductDetails" asp-route-id="@p.RowKey">@p.Name</a></h2><div class="product-card-bottom"><span class="product-price">R @(parsed ? price.ToString("N2", CultureInfo.InvariantCulture) : p.Price)</span>
+                @if (User.IsInRole("Customer")) { <form asp-controller="Cart" asp-action="Add" method="post"><input type="hidden" name="productId" value="@p.RowKey" /><button type="submit" class="add-cart-button" aria-label="Add @p.Name to cart" title="Add to cart"><partial name="_Icon" model='@("plus")' /><span>Add to cart</span></button></form> }
+                </div>
+                @if(admin) { <div class="card-admin-actions"><a asp-action="ProductDetails" asp-route-id="@p.RowKey">Details</a><a asp-action="EditProduct" asp-route-rowKey="@p.RowKey"><partial name="_Icon" model='@("edit")' />Edit</a><form asp-action="DeleteProduct" method="post" data-confirm="Delete this product from the catalog?"><input type="hidden" name="rowKey" value="@p.RowKey" /><button type="submit" class="text-danger" aria-label="Delete @p.Name"><partial name="_Icon" model='@("trash")' />Delete</button></form></div> }
+                </div>
+            </article>
+        }
+    </div>
+    <div class="empty-state panel" data-catalog-empty hidden><span class="empty-icon"><partial name="_Icon" model='@("search")' /></span><h2>No matches this time.</h2><p>Try another product name or SKU.</p><button class="btn btn-secondary" type="button" data-catalog-reset>Clear search</button></div>
+</section>
+@*
+//-------------------End Of File------------------//
+*@

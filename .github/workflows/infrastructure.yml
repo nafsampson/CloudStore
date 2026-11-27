@@ -1,0 +1,64 @@
+# //summary//
+# Previews infrastructure and supports an explicit environment-gated apply step.
+# //summary//
+# //-------------------Start Of File------------------//
+name: Preview or deploy Azure infrastructure
+on:
+  workflow_dispatch:
+    inputs:
+      apply:
+        description: Apply after reviewing the preview (requires azure-infrastructure environment)
+        type: boolean
+        default: false
+permissions:
+  contents: read
+concurrency:
+  group: cloudstore-infrastructure
+  cancel-in-progress: false
+jobs:
+  preview:
+    if: github.ref == 'refs/heads/main'
+    environment: azure-preview
+    permissions:
+      contents: read
+      id-token: write
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: azure/login@7184910d9eb2b1c5e48f7073824a90609bb9b6d6 # v2
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+      - name: Compile and preview
+        env:
+          RESOURCE_GROUP: ${{ vars.AZURE_RESOURCE_GROUP }}
+        run: |
+          az bicep build --file infra/main.bicep --outfile /tmp/cloudstore-template.json
+          az deployment group what-if --resource-group "$RESOURCE_GROUP" --parameters infra/existing.bicepparam --result-format ResourceIdOnly
+  apply:
+    if: inputs.apply
+    needs: preview
+    environment: azure-infrastructure
+    permissions:
+      contents: read
+      id-token: write
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: azure/login@7184910d9eb2b1c5e48f7073824a90609bb9b6d6 # v2
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+      - name: Apply incremental deployment
+        env:
+          RESOURCE_GROUP: ${{ vars.AZURE_RESOURCE_GROUP }}
+        run: az deployment group create --resource-group "$RESOURCE_GROUP" --parameters infra/existing.bicepparam --mode Incremental --query properties.outputs
+# //-------------------End Of File------------------//

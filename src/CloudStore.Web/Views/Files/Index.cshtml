@@ -1,0 +1,19 @@
+@*
+//summary//
+Presents private contracts with administrator upload controls and bounded download links.
+//summary//
+//-------------------Start Of File------------------//
+*@
+@model List<string>
+@{ ViewData["Title"] = "Contracts"; }
+<div class="page-heading"><div><span class="eyebrow">Keep the important things together</span><h1>Contracts <span class="count-badge">@Model.Count</span></h1><p>Your store’s documents, organized and available to administrators.</p></div></div>
+<div class="file-layout"><section class="panel"><div class="panel-heading"><h2>Document library</h2><span class="muted small">@Model.Count files</span></div>
+@if (Model.Count == 0) { <div class="empty-state"><span class="empty-icon"><partial name="_Icon" model='@("file")' /></span><h2>A place for the important details.</h2><p>Upload your first contract to start building your document library.</p></div> }
+@foreach(var file in Model)
+{
+    <div class="file-row"><span class="icon-tile"><partial name="_Icon" model='@("file")' /></span><div class="file-row-main"><strong>@(System.IO.Path.GetExtension(file).Equals(".pdf", StringComparison.OrdinalIgnoreCase) ? "PDF contract" : "Text contract")</strong><small title="@file">@file</small></div><a class="btn btn-sm btn-outline-primary" asp-action="Download" asp-route-name="@file" aria-label="Download @file"><partial name="_Icon" model='@("download")' />Download</a></div>
+}
+</section><aside class="panel upload-panel"><partial name="_Icon" model='@("upload")' /><h2>Add a document</h2><p>PDF or UTF-8 text, up to 4 MiB. Your most recent 100 entries can be listed here.</p><form asp-action="Upload" method="post" enctype="multipart/form-data" class="stack-form"><div class="field"><label for="contract-file">Choose a contract</label><input id="contract-file" type="file" name="file" accept=".pdf,.txt" class="form-control" required /></div><button type="submit" class="btn btn-primary"><partial name="_Icon" model='@("upload")' />Upload document</button></form></aside></div>
+@*
+//-------------------End Of File------------------//
+*@

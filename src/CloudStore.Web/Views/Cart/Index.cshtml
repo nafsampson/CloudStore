@@ -1,0 +1,26 @@
+@*
+//summary//
+Shows account-owned cart lines with current catalog estimates and the existing checkout action.
+//summary//
+//-------------------Start Of File------------------//
+*@
+@model CloudStore.Models.CartPage
+@using System.Globalization
+@{ ViewData["Title"] = "Your cart"; var currency = CultureInfo.InvariantCulture; }
+<div class="page-heading"><div><span class="eyebrow">A few good choices</span><h1>Your cart <span class="count-badge">@Model.Lines.Count</span></h1><p>Take another look before making them yours.</p></div><a class="btn btn-secondary" asp-controller="Tables" asp-action="Products">Continue shopping <partial name="_Icon" model='@("arrow")' /></a></div>
+@if (Model.Lines.Count == 0)
+{
+    <div class="empty-state panel"><span class="empty-icon"><partial name="_Icon" model='@("cart")' /></span><h2>Good things are waiting.</h2><p>Your cart is empty. Explore the collection and find something that fits your everyday.</p><a class="btn btn-primary" asp-controller="Tables" asp-action="Products">Find your next favorite <partial name="_Icon" model='@("arrow")' /></a></div>
+}
+else
+{
+    <div class="cart-layout"><section class="panel" aria-label="Cart items">
+    @foreach (var line in Model.Lines)
+    {
+        <article class="cart-line"><span class="cart-line-icon"><partial name="_Icon" model='@("box")' /></span><div class="cart-line-main"><h2>@line.ProductName</h2><p>Selected for your everyday</p><span class="quantity-tag">Qty @line.Quantity</span></div><div class="line-price">@(line.TotalCents is long total ? "R " + (total / 100m).ToString("N2", currency) : "Price unavailable")<form asp-action="Remove" method="post"><input type="hidden" name="rowKey" value="@line.RowKey" /><button class="link-button" type="submit" aria-label="Remove @line.ProductName from cart">Remove</button></form></div></article>
+    }
+    </section><aside class="panel cart-summary" aria-labelledby="summary-heading"><h2 id="summary-heading">Your order summary</h2><div class="summary-row"><span>Items selected</span><strong>@Model.ItemCount</strong></div><div class="summary-row"><span>Order type</span><strong>Store order</strong></div><div class="summary-row summary-total"><span>Estimated total</span><strong>@(Model.EstimatedTotalCents is long estimate ? "R " + (estimate / 100m).ToString("N2", currency) : "At checkout")</strong></div><form asp-action="Checkout" method="post"><button type="submit" class="btn btn-primary btn-block">Place order <partial name="_Icon" model='@("arrow")' /></button></form><p>Prices are checked again when your order is placed. You can follow its progress in My orders.</p></aside></div>
+}
+@*
+//-------------------End Of File------------------//
+*@

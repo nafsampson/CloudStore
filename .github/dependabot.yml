@@ -1,0 +1,17 @@
+# //summary//
+# Schedules dependency and pinned GitHub Action update proposals.
+# //summary//
+# //-------------------Start Of File------------------//
+version: 2
+updates:
+  - package-ecosystem: nuget
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+# //-------------------End Of File------------------//

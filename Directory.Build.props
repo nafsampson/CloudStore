@@ -1,0 +1,14 @@
+<!--
+//summary//
+Applies common build and package-lock settings to maintained projects.
+//summary//
+-->
+<!-- Start Of File -->
+<Project>
+  <PropertyGroup>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <RestoreLockedMode Condition="'$(CI)' == 'true' and '$(MSBuildProjectName)' != 'azure_functions.g'">true</RestoreLockedMode>
+    <ContinuousIntegrationBuild Condition="'$(CI)' == 'true'">true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+</Project>
+<!-- End Of File -->
