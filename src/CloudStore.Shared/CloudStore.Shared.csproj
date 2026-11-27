@@ -13,7 +13,7 @@ Builds shared retail records, processing rules and reusable upload/storage compo
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Azure.Data.Tables" Version="12.11.0" />
-    <PackageReference Include="Azure.Storage.Blobs" Version="12.25.0" />
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.30.2" />
     <PackageReference Include="Azure.Storage.Files.Shares" Version="12.23.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="10.0.15" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.15" />

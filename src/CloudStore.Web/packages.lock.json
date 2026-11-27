@@ -26,11 +26,13 @@
       },
       "Azure.Storage.Blobs": {
         "type": "Direct",
-        "requested": "[12.25.0, )",
-        "resolved": "12.25.0",
-        "contentHash": "+5rQj7vQ2NsVxEzFeGxRGP44P9GhJcJMEZTaG/w96z/c8mEO6OoawBAr8tJ/0vH1QSVkjfr+IY3GmGpT507I0w==",
+        "requested": "[12.30.2, )",
+        "resolved": "12.30.2",
+        "contentHash": "7c0H70SRY3Axty6YunsEFqw0k9KYzEgpmi4iRROAM325S2Ou5tyF1VvPw7imyjmopzhSqFx5LvwuE4/CLBDhng==",
         "dependencies": {
-          "Azure.Storage.Common": "12.24.0"
+          "Apache.Arrow": "22.1.0",
+          "Azure.Core": "1.60.0",
+          "Azure.Storage.Common": "12.29.1"
         }
       },
       "Azure.Storage.Files.Shares": {
@@ -115,6 +117,11 @@
         "resolved": "10.0.15",
         "contentHash": "4jEv/lXDuQkh60lPU3hlwASErXdv1ZMKmsxVuBfZWiVKT5Q2QGo58kTa6rN519+PU+m4Hsj1m3yT8fN+Xw0XZw=="
       },
+      "Apache.Arrow": {
+        "type": "Transitive",
+        "resolved": "22.1.0",
+        "contentHash": "mTdHWGsNCWpKyQxqyNcSS+q4BtBTSOUfhdG+Lwo6eAOznCLSwrZQ5VKtDG2G8VrUp1ul4DwWHefoBS1umjO/VQ=="
+      },
       "Azure.Core": {
         "type": "Transitive",
         "resolved": "1.60.0",
@@ -149,11 +156,11 @@
       },
       "Azure.Storage.Common": {
         "type": "Transitive",
-        "resolved": "12.24.0",
-        "contentHash": "JOmmSgNvH/zRWRihT6PZapEdTNESP4YtGS5OjbkUAg6EFiM6Ite7hDkqzJrA7QKmi1SRwZ40vpHi1McVpQuhgw==",
+        "resolved": "12.29.1",
+        "contentHash": "T0CHonZVqUhIze/357Sbbg2ite4YM41rIvf+cEJMas/uRp5YiPGq3MV1E8/nvdWClJrzmmorXv4bg3qu1FuXIg==",
         "dependencies": {
-          "Azure.Core": "1.44.1",
-          "System.IO.Hashing": "8.0.0"
+          "Azure.Core": "1.60.0",
+          "System.IO.Hashing": "10.0.9"
         }
       },
       "Humanizer.Core": {
@@ -570,8 +577,8 @@
       },
       "System.IO.Hashing": {
         "type": "Transitive",
-        "resolved": "8.0.0",
-        "contentHash": "ne1843evDugl0md7Fjzy6QjJrzsjh46ZKbhf8GwBXb5f/gw97J4bxMs0NQKifDuThh/f0bZ0e62NPl1jzTuRqA=="
+        "resolved": "10.0.9",
+        "contentHash": "vixglGnKEexAJDeIRhyayZYzxyrgK1K9GU3K/zRZVwDbaDcMkSqj4WDHoVmQMNfsdUtLALfNSJw6mBIpdxie4A=="
       },
       "System.Memory.Data": {
         "type": "Transitive",
@@ -587,7 +594,7 @@
         "type": "Project",
         "dependencies": {
           "Azure.Data.Tables": "[12.11.0, )",
-          "Azure.Storage.Blobs": "[12.25.0, )",
+          "Azure.Storage.Blobs": "[12.30.2, )",
           "Azure.Storage.Files.Shares": "[12.23.0, )"
         }
       }
